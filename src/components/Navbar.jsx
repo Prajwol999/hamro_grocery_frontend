@@ -28,21 +28,23 @@ const Navbar = () => {
 
   return (
     <header className={`fixed top-0 left-0 w-full transition-all duration-300 z-50 ${isScrolled ? "bg-white/95 shadow-md backdrop-blur-sm" : "bg-transparent"}`}>
-      <nav className="container mx-auto px-6 py-6 flex items-center justify-between">
+      <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
         <button onClick={() => navigate('home')} className="flex items-center">
-          <img 
+          <img
             src={logo}
-            alt="HamroGrocery Logo" 
-            className="h-20 w-auto" 
+            alt="HamroGrocery Logo"
+            className="h-20 w-auto"
           />
         </button>
 
+        {/* Desktop Menu */}
         <div className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
             <button
               key={link.name}
               onClick={() => navigate(link.page)}
-              className={`font-medium tracking-wide transition-colors ${
+              // UPDATED: Added 'text-lg' for a larger font size
+              className={`text-lg font-medium tracking-wide transition-colors ${
                 isScrolled ? 'text-gray-700 hover:text-green-600' : 'text-white hover:text-gray-200'
               }`}
             >
@@ -66,12 +68,14 @@ const Navbar = () => {
           </button>
           <button
             onClick={() => navigate('login')}
-            className="bg-green-600 text-white font-semibold px-6 py-2 rounded-full hover:bg-green-700 transition-transform transform hover:scale-105"
+            // UPDATED: Added 'text-base' to slightly increase size
+            className="bg-green-600 text-white text-base font-semibold px-6 py-2 rounded-full hover:bg-green-700 transition-transform transform hover:scale-105"
           >
             Login
           </button>
         </div>
 
+        {/* Mobile Menu Button */}
         <div className="lg:hidden">
           <button
             onClick={() => setIsMenuOpen(true)}
@@ -87,14 +91,14 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu Panel */}
         <div className={`fixed inset-0 bg-black/40 z-50 transition-opacity lg:hidden ${isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <div className={`absolute top-0 right-0 h-full w-2/3 max-w-sm bg-white shadow-xl transition-transform transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
             <div className="p-6 flex flex-col h-full">
               <div className="flex justify-between items-center mb-8">
                 <span className="text-2xl font-bold text-green-700">HamroGrocery</span>
-                <button 
-                  onClick={() => setIsMenuOpen(false)} 
+                <button
+                  onClick={() => setIsMenuOpen(false)}
                   className="p-2"
                   aria-label="Close menu"
                 >
@@ -110,6 +114,7 @@ const Navbar = () => {
                   <button
                     key={link.name}
                     onClick={() => handleLinkClick(link.page)}
+                    // NOTE: 'text-lg' was already a good size for mobile, so it remains unchanged.
                     className="text-gray-700 font-medium text-lg text-left"
                   >
                     {link.name}
@@ -119,7 +124,8 @@ const Navbar = () => {
               <div className="mt-auto">
                 <button
                   onClick={() => handleLinkClick('login')}
-                  className="w-full bg-green-600 text-white font-bold px-6 py-3 rounded-full hover:bg-green-700"
+                   // UPDATED: Added 'text-lg' to match mobile menu links
+                  className="w-full bg-green-600 text-white text-lg font-bold px-6 py-3 rounded-full hover:bg-green-700"
                 >
                   Login
                 </button>
