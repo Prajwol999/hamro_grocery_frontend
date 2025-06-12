@@ -8,7 +8,7 @@ import { registerUserService } from '../services/authServices';
 
 export const useRegisterUser = () => {
   return useMutation({
-    mutationFn: registerUserService, // Using the imported function here
+    mutationFn: registerUserService, 
     onSuccess: (data) => {
       toast.success(data.message || 'Signup successful! You can now log in.');
     },
