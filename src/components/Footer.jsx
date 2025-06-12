@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa';
 import NavigationContext from '../context/NavigationContext';
 
@@ -12,7 +13,7 @@ const Footer = () => {
 
           {/* LOGO IMAGE */}
           <div>
-            <img src="/hamro.png" alt="" className="h-12 mb-4" />
+            
             <p className="text-gray-400 text-sm">
               Your daily dose of freshness, delivered right to your door.
             </p>

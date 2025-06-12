@@ -43,7 +43,7 @@ const Navbar = () => {
             <button
               key={link.name}
               onClick={() => navigate(link.page)}
-              // UPDATED: Added 'text-lg' for a larger font size
+              
               className={`text-lg font-medium tracking-wide transition-colors ${
                 isScrolled ? 'text-gray-700 hover:text-green-600' : 'text-white hover:text-gray-200'
               }`}
