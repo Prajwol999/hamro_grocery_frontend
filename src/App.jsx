@@ -1,25 +1,35 @@
-import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import NavigationContext from './context/NavigationContext';
 import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import { useAppContext } from './context/AppContext';
+import Footer from './components/Footer';
+import LoginPage from './components/auth/LoginPage';
+import SignupPage from './components/auth/SignupPage';
+import HomePage from './pages/HomePage';
 
-const App = () => {
-  const location = useLocation();
-  const isSellerPath = location.pathname.startsWith('/seller');
-  const{showuserLogin} = {useAppContext}
+function App() {
+  const [currentPage, setCurrentPage] = useState('home');
+  const navigate = (page) => setCurrentPage(page);
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'login': return <LoginPage />;
+      case 'signup': return <SignupPage />;
+      case 'products':
+      case 'contact':
+      case 'about':
+      case 'home':
+      default: return <HomePage />;
+    }
+  };
 
   return (
-    <div>
+    <NavigationContext.Provider value={{ navigate }}>
       <Navbar />
-      {showuserLogin? <Login/>:null}
-      
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </div>
-    
+      {renderPage()}
+      {/* <Footer /> */}
+    </NavigationContext.Provider>
   );
-};
+}
 
 export default App;
+export { NavigationContext, App };
