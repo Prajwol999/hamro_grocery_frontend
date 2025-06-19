@@ -1,25 +1,27 @@
 import { useMutation } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
 import { loginUserService } from '../services/authServices';
+import { toast } from 'react-toastify';
 import { useContext } from 'react';
-import NavigationContext from '../context/NavigationContext';
-
+import { AuthContext } from '../auth/AuthContext';
 
 export const useLoginUser = () => {
-  const { navigate } = useContext(NavigationContext);
+  const { login } = useContext(AuthContext);
 
   return useMutation({
     mutationFn: loginUserService,
-    onSuccess: (data) => {
+    mutationKey: ['login-key'],
+    onSuccess: (res) => {
+      console.log('Login response:', res);
+
+      // Assuming your backend returns { data: user, token: '...' }
+      login(res.data, res.token); // Save user & token
+
       toast.success('Login successful!');
-      localStorage.setItem('token', data.token);
-      setTimeout(() => {
-        
-        window.location.hash = '#/dashboard'; 
-      }, 1500);
     },
-    onError: (error) => {
-      toast.error(error.message || 'Login failed. Please try again.');
+    onError: () => {
+      toast.error('Login failed. Please try again.');
     },
   });
 };
+
+export default useLoginUser;
