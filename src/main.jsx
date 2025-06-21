@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { BrowserRouter } from 'react-router-dom';
 import AuthContextProvider from './auth/AuthContext';
- // ✅ Make sure this path is correct
+ 
 
 const queryClient = new QueryClient();
 
