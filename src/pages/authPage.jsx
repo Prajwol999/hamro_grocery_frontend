@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import SignupPage from './SignupPage';
-import LoginPage from './LoginPage';
-import NavigationContext from '../../context/NavigationContext';
+import SignupPage from '../components/auth/SignupPage';
+import LoginPage from '../components/auth/LoginPage';
+import NavigationContext from '../context/NavigationContext';
 
 export const AuthPage = () => {
   const [view, setView] = useState('login'); 

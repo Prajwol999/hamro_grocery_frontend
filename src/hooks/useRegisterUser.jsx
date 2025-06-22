@@ -1,20 +1,19 @@
-
-
 import { useMutation } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
-
 import { registerUserService } from '../services/authServices';
-
+import { toast } from 'react-toastify';
 
 export const useRegisterUser = () => {
   return useMutation({
-    mutationFn: registerUserService, 
-    onSuccess: (data) => {
-      toast.success(data.message || 'Signup successful! You can now log in.');
+    mutationFn: (formData) => registerUserService(formData),
+    mutationKey: ['register-key'],
+    onSuccess: (res) => {
+      toast.success('Registration successful! Please login.');
     },
     onError: (error) => {
-      toast.error(error.message || 'Signup failed.');
+      const message = error.response?.data?.message || error.message || 'Registration failed. Please try again.';
+      toast.error(message);
     },
   });
 };
 
+export default useRegisterUser;

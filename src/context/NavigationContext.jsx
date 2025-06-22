@@ -1,4 +1,3 @@
-
-import React from 'react';
-const NavigationContext = React.createContext();
+import { createContext } from 'react';
+const NavigationContext = createContext();
 export default NavigationContext;
