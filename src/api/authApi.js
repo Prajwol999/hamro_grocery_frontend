@@ -1,7 +1,11 @@
-import axios from "./api";
+import api from "./api.js"; 
 
-export const registerUserApi = (data) => axios.post("/register", data);
-export const loginUserApi = async (formData) => {
-    console.log("FormData:", formData);
-    return await axios.post("/login", formData); 
+
+export const registerUserApi = (data) => {
+  return api.post("/auth/register", data);
+};
+
+
+export const loginUserApi = (formData) => {
+  return api.post("/auth/login", formData);
 };
