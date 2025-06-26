@@ -14,7 +14,7 @@ const HeroSection = () => {
         <source src={video} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      <div className="absolute inset-0 flex items-center justify-center mt-50">
+      <div className="absolute inset-0 flex items-center justify-center mt-58">
         <div className="flex items-center gap-4">
           <a 
             href="/products" 
