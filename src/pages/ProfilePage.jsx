@@ -1,6 +1,4 @@
 
-
-
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../auth/AuthContext';
 import { updateUserProfilePicture } from '../services/userServices';
@@ -25,10 +23,10 @@ const ProfilePage = () => {
         setUploading(true);
         const response = await updateUserProfilePicture(formData);
         if (response.success) {
-            // Merge new data with existing user to preserve fields like createdAt
+            
             updateUser({
-                ...user,             // preserve existing fields
-                ...response.data     // overwrite with new profilePicture and other updated fields
+                ...user,             
+                ...response.data     
             });
             toast.success('Profile picture updated');
         } else {
