@@ -51,7 +51,7 @@ const Footer = () => {
                         <ul className="space-y-3 text-sm">
                             <li className="flex items-center">
                                 <FaPhoneAlt className="text-green-600 mr-3" />
-                                <a href="tel:9849423853" className="text-gray-500 hover:text-green-600 transition-colors">9849423853</a>
+                                <a href="tel:9849423853" className="text-gray-500 hover:text-green-600 transition-colors">9842723033</a>
                             </li>
                             <li className="flex items-center">
                                 <FaEnvelope className="text-green-600 mr-3" />
