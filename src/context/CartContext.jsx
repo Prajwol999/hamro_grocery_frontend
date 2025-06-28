@@ -1,19 +1,32 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 
 export const CartContext = createContext();
 
 export const CartContextProvider = ({ children }) => {
+    
     const [cartItems, setCartItems] = useState(() => {
         try {
             const localData = localStorage.getItem('cartItems');
             return localData ? JSON.parse(localData) : [];
         } catch (error) {
+            console.error("Error parsing cart items from localStorage", error);
             return [];
         }
     });
 
+    
     useEffect(() => {
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        try {
+            if (cartItems.length === 0) {
+               
+                localStorage.removeItem('cartItems');
+            } else {
+               
+                localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            }
+        } catch (error) {
+            console.error("Error saving cart items to localStorage", error);
+        }
     }, [cartItems]);
 
     const addToCart = (product, quantity) => {
@@ -44,14 +57,18 @@ export const CartContextProvider = ({ children }) => {
         setCartItems(prevItems => prevItems.filter(item => item._id !== productId));
     };
 
-    const clearCart = () => {
+    
+    const clearCart = useCallback(() => {
         setCartItems([]);
-    };
+    }, []); 
+    
+    const contextValue = { cartItems, addToCart, updateQuantity, removeFromCart, clearCart };
 
     return (
-        <CartContext.Provider value={{ cartItems, addToCart, updateQuantity, removeFromCart, clearCart }}>
+        <CartContext.Provider value={contextValue}>
             {children}
         </CartContext.Provider>
     );
 };
+
 export default CartContextProvider;
