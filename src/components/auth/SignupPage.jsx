@@ -12,7 +12,7 @@ const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   
-  // New state to control the modal's visibility
+  
   const [isTermsModalOpen, setTermsModalOpen] = useState(false);
 
   const { mutate: registerUser, isLoading: isSubmitting } = useRegisterUser();

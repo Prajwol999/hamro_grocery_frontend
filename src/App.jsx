@@ -10,6 +10,8 @@ import LoginPage from './components/auth/LoginPage.jsx';
 import SignupPage from './components/auth/SignupPage.jsx';
 import CheckoutPage from './pages/CheckoutPage.jsx';
 import EsewaVerifyPage from './pages/EsewaVerifyPage.jsx';
+import ForgotPasswordPage from './pages/ForgetPasswordPage.jsx';
+import ResetPasswordPage from './pages/ResetPasswordPage.jsx';
 
 
 export default function App() {
@@ -23,6 +25,11 @@ export default function App() {
       {/* --- AUTH ROUTES --- */}
       <Route path="/login" element={!user ? <LoginPage /> : <Navigate to="/dashboard" replace />} />
       <Route path="/register" element={!user ? <SignupPage /> : <Navigate to="/dashboard" replace />} />
+      <Route
+            path="/forgot-password"
+            element={!user ? <ForgotPasswordPage /> : <Navigate to="/dashboard" replace />}
+          />
+           <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
       
       {/* --- PROTECTED ROUTES --- */}
 

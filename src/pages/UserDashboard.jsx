@@ -8,18 +8,14 @@ import { fetchCategories } from '../services/userServices.js';
 import { SERVER_BASE_URL } from '../api/api.js';
 import axios from 'axios';
 import logo from '../assets/hamro2.png';
-
-// Import other pages
 import ProductsPage from './ProductsPage.jsx';
-// Assuming OrdersPage is now in its own file as well, for consistency
-// import OrdersPage from './OrdersPage.jsx';
 import ProfilePage from './ProfilePage.jsx';
 import CartPage from './CartPage.jsx';
 import CheckoutPage from './CheckoutPage.jsx';
 import { Avatar } from '../components/Avatar';
 import ShoppingList from '../components/ShoppingList.jsx'; 
 
-// --- API Setup for User ---
+
 const userApi = axios.create({
     baseURL: `${SERVER_BASE_URL}/api`,
     headers: { 'Content-Type': 'application/json' }
@@ -46,7 +42,7 @@ const fetchPaymentHistory = async () => {
     return data.history;
 };
 
-// --- OrdersPage Component ---
+
 const OrdersPage = () => {
     const { data: orders, isLoading, isError, error } = useQuery({ 
         queryKey: ['myOrders'], 
@@ -136,7 +132,7 @@ const OrdersPage = () => {
     );
 };
 
-// --- New PaymentsPage Component ---
+
 const PaymentsPage = () => {
     const { data: history, isLoading, isError, error } = useQuery({
         queryKey: ['paymentHistory'],
@@ -207,7 +203,7 @@ const PaymentsPage = () => {
 };
 
 
-// --- Reusable Components ---
+
 const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
   return (
@@ -252,7 +248,7 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, title, message }) => {
   );
 };
 
-// --- Main UserDashboard Component ---
+
 const UserDashboard = () => {
   const { user, logout } = useContext(AuthContext);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

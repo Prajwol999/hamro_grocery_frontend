@@ -28,13 +28,13 @@ const CheckoutPage = () => {
     const [isFetchingLocation, setIsFetchingLocation] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState('cod');
 
-    // This effect now only handles payment *failures* that are sent back here.
+    
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         if (params.get('payment') === 'failure') {
             const message = decodeURIComponent(params.get('message') || 'Payment failed or was cancelled.');
             toast.error(message);
-            // Important: remove the query params from the URL to prevent the toast on refresh
+            
             navigate('/checkout', { replace: true });
         }
     }, [location.search, navigate]);

@@ -86,11 +86,18 @@ const LoginPage = () => {
                                 </button>
                             </div>
                         </div>
-                        <div className="flex items-center justify-end">
+                        {/* <div className="flex items-center justify-end">
                             <a href="#" onClick={(e) => e.preventDefault()} className="text-sm text-green-600 hover:underline">
                                 Forgot Password?
+                                
                             </a>
-                        </div>
+                        </div> */}
+                        <div className="flex justify-end text-sm w-full">
+                    <Link to="/forgot-password" className="font-semibold text-blue-600 hover:text-blue-500">
+                        Forgot Password?
+                    </Link>
+                </div>
+
                         {/* Submit Button */}
                         <div>
                             <button type="submit" disabled={isLoading} className="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center disabled:opacity-60">
