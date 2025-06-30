@@ -73,12 +73,12 @@ const ForgotPasswordPage = () => {
                         <div className="flex justify-center mb-6">
                              
                             <Link to="/">
-                                <img src={logo} alt="Hamro Grocery Logo" className="h-28 w-auto" onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/200x112/CCCCCC/FFFFFF?text=Logo'; }} />
+                                <img src={logo} alt="Hamro Grocery Logo" className="h-15 w-auto" onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/200x112/CCCCCC/FFFFFF?text=Logo'; }} />
                             </Link>
                         </div>
                         
                         <div className="text-center mb-8">
-                            <h2 className="text-3xl font-bold text-gray-900">
+                            <h2 className="text-3xl font-bold text-gray-700">
                                 Forgot Password?
                             </h2>
                             <p className="mt-2 text-sm text-gray-600">
@@ -129,7 +129,7 @@ const ForgotPasswordPage = () => {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className="w-full bg-gray-800 hover:bg-black text-white text-sm font-semibold py-3 rounded-lg transition duration-200 ease-in-out shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="w-full bg-green-600 hover:bg-green-700 text-white text-sm font-semibold py-3 rounded-lg transition duration-200 ease-in-out shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         {loading ? 'Sending...' : 'Send Reset Link'}
                                     </button>
@@ -145,7 +145,7 @@ const ForgotPasswordPage = () => {
                         )}
                     </div>
                      <p className="text-center text-xs text-white/80">
-                         &copy; {new Date().getFullYear()} MotoFix. All rights reserved.
+                         &copy; {new Date().getFullYear()} HamroGrocery. All rights reserved.
                      </p>
                 </div>
             </div>
