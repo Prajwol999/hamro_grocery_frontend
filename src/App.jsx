@@ -1,18 +1,23 @@
 import React, { useContext } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { AuthContext } from './auth/AuthContext.jsx'; 
-import ProtectedRoute from './routers/ProtectedRoutes.jsx'; 
-import MainLayout from './layouts/MainLayout.jsx'; 
+import { AuthContext } from './auth/AuthContext.jsx';
+import ProtectedRoute from './routers/ProtectedRoutes.jsx'; // Or './auth/PrivateRoute.jsx' if that's the actual path
+import MainLayout from './layouts/MainLayout.jsx';
+
+// Pages
 import HomePage from './pages/HomePage.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import UserDashboard from './pages/UserDashboard.jsx';
 import LoginPage from './components/auth/LoginPage.jsx';
 import SignupPage from './components/auth/SignupPage.jsx';
 import CheckoutPage from './pages/CheckoutPage.jsx';
-import EsewaVerifyPage from './pages/EsewaVerifyPage.jsx';
 import ForgotPasswordPage from './pages/ForgetPasswordPage.jsx';
 import ResetPasswordPage from './pages/ResetPasswordPage.jsx';
 
+// Optional: Replace if you're using new PaymentSuccessPage
+import { PaymentSuccessPage } from './pages/PaymentSuccessPage.jsx';
+// If still using the old EsewaVerifyPage, uncomment the below line instead:
+// import EsewaVerifyPage from './pages/EsewaVerifyPage.jsx';
 
 export default function App() {
   const { user } = useContext(AuthContext);
@@ -21,18 +26,14 @@ export default function App() {
     <Routes>
       {/* --- PUBLIC ROUTES --- */}
       <Route path="/" element={<MainLayout><HomePage /></MainLayout>} />
-      
+
       {/* --- AUTH ROUTES --- */}
       <Route path="/login" element={!user ? <LoginPage /> : <Navigate to="/dashboard" replace />} />
       <Route path="/register" element={!user ? <SignupPage /> : <Navigate to="/dashboard" replace />} />
-      <Route
-            path="/forgot-password"
-            element={!user ? <ForgotPasswordPage /> : <Navigate to="/dashboard" replace />}
-          />
-           <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-      
-      {/* --- PROTECTED ROUTES --- */}
+      <Route path="/forgot-password" element={!user ? <ForgotPasswordPage /> : <Navigate to="/dashboard" replace />} />
+      <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
 
+      {/* --- PROTECTED ROUTES --- */}
       <Route
         path="/checkout"
         element={
@@ -44,7 +45,16 @@ export default function App() {
         }
       />
 
-      
+      <Route
+        path="/payment-success"
+        element={
+          <ProtectedRoute>
+            <PaymentSuccessPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* If you're still using EsewaVerifyPage instead, use this instead:
       <Route
         path="/payment/verify"
         element={
@@ -52,9 +62,9 @@ export default function App() {
             <EsewaVerifyPage />
           </ProtectedRoute>
         }
-      />
+      /> */}
 
-      {/* DASHBOARD ROUTE */}
+      {/* --- DASHBOARD ROUTING --- */}
       <Route
         path="/dashboard/*"
         element={
@@ -63,8 +73,8 @@ export default function App() {
           </ProtectedRoute>
         }
       />
-      
-      {/* CATCH-ALL ROUTE */}
+
+      {/* --- CATCH-ALL ROUTE --- */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
