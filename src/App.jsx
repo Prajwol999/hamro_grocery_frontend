@@ -1,10 +1,8 @@
 import React, { useContext } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthContext } from './auth/AuthContext.jsx';
-import ProtectedRoute from './routers/ProtectedRoutes.jsx'; // Or './auth/PrivateRoute.jsx' if that's the actual path
+import ProtectedRoute from './routers/ProtectedRoutes.jsx'; 
 import MainLayout from './layouts/MainLayout.jsx';
-
-// Pages
 import HomePage from './pages/HomePage.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import UserDashboard from './pages/UserDashboard.jsx';
@@ -13,8 +11,6 @@ import SignupPage from './components/auth/SignupPage.jsx';
 import CheckoutPage from './pages/CheckoutPage.jsx';
 import ForgotPasswordPage from './pages/ForgetPasswordPage.jsx';
 import ResetPasswordPage from './pages/ResetPasswordPage.jsx';
-
-// Optional: Replace if you're using new PaymentSuccessPage
 import { PaymentSuccessPage } from './pages/PaymentSuccessPage.jsx';
 // If still using the old EsewaVerifyPage, uncomment the below line instead:
 // import EsewaVerifyPage from './pages/EsewaVerifyPage.jsx';
