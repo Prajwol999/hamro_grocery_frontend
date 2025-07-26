@@ -24,12 +24,11 @@ const Navbar = () => {
     <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
-          {/* --- MODIFICATION START --- */}
-          {/* Replaced the text with an image from the public folder */}
+         
           <Link to="/" className="flex items-center">
-            <img src={logo} alt="Grocery Logo" className="h-16 w-auto" />
+            <img src={logo} alt="Grocery Logo" className="h-20 w-auto" />
           </Link>
-          {/* --- MODIFICATION END --- */}
+          
 
           <div className="hidden md:flex items-center space-x-8">
             <button
