@@ -1,15 +1,20 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { QueryClient, QueryClientProvider, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
-import { Plus, Edit, Trash2, Search, Users, DollarSign, LogOut, Menu, X, AlertTriangle, ShoppingCart, Package, ClipboardList, Tag, Home as HomeIcon, Mail } from 'lucide-react';
+
+import { Plus, Edit, Trash2, Search, Users, DollarSign, LogOut, Menu, X, AlertTriangle, ShoppingCart, Package, ClipboardList, Tag, Home as HomeIcon, Mail, PhoneCallIcon, User as UserIcon, MessageSquare } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
-import logo from '../assets/hamro.png';
-
+import 'react-toastify/dist/ReactToastify.css';
+import dayjs from 'dayjs';
+import { AuthContext } from '../auth/AuthContext';
+import { Avatar } from '../components/Avatar';
+import AdminProfilePage from './AdminProfilePage';
+import { useChatbot } from '../hooks/useChatbot';
+import { Chatbot } from '../components/Chatbot';
 
 const queryClient = new QueryClient();
-
 
 const API_URL = "http://localhost:8081/api";
 
@@ -138,6 +143,7 @@ const OrderDetailsModal = ({ isOpen, onClose, orderId }) => {
                             <div className="space-y-2 text-sm">
                                 <p className="flex items-center gap-2"><Users size={14} className="text-gray-400" /> <span className="font-medium text-gray-600">{order.customer?.fullName}</span></p>
                                 <p className="flex items-center gap-2"><Mail size={14} className="text-gray-400" /> <span className="text-gray-600">{order.customer?.email}</span></p>
+                                <p className="flex items-center gap-2"><PhoneCallIcon size={14} className="text-gray-400" /> <span className="text-gray-600">{order.phone}</span></p>
                             </div>
                         </Card>
                         <Card>
@@ -146,6 +152,21 @@ const OrderDetailsModal = ({ isOpen, onClose, orderId }) => {
                                 <HomeIcon size={14} className="text-gray-400 mt-1 flex-shrink-0" />
                                 <span>{order.address}</span>
                             </p>
+                        </Card>
+                        <Card>
+                            <h4 className="text-lg font-semibold mb-3 text-gray-800">Payment Information</h4>
+                            <div className="space-y-2 text-sm">
+                                <p className="flex items-center gap-2">
+                                    <DollarSign size={14} className="text-gray-400" />
+                                    <span>Method: <span className="font-medium text-gray-600">{order.paymentMethod}</span></span>
+                                </p>
+                                {order.transactionId && (
+                                    <p className="flex items-center gap-2">
+                                        <span className="text-gray-400 font-mono text-lg">#</span>
+                                        <span>ID: <span className="font-mono text-xs text-gray-600">{order.transactionId}</span></span>
+                                    </p>
+                                )}
+                            </div>
                         </Card>
                     </div>
                     <div>
@@ -157,7 +178,7 @@ const OrderDetailsModal = ({ isOpen, onClose, orderId }) => {
                                         <img src={item.imageUrl} alt={item.name} className="w-16 h-16 object-cover rounded-md flex-shrink-0" onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/100x100/CCCCCC/FFFFFF?text=Img'; }} />
                                         <div className="flex-grow">
                                             <p className="font-semibold text-gray-800">{item.name}</p>
-                                            <p className="text-sm text-gray-500">Qty: {item.quantity} &times; ₹{item.price.toFixed(2)}</p>
+                                            <p className="text-sm text-gray-500">Qty: {item.quantity} × ₹{item.price.toFixed(2)}</p>
                                         </div>
                                         <p className="font-medium text-gray-700">₹{(item.price * item.quantity).toFixed(2)}</p>
                                     </div>
@@ -238,7 +259,6 @@ const DashboardPage = () => {
     );
 };
 
-
 const OrdersPage = () => {
     const queryClient = useQueryClient();
     const [searchTerm, setSearchTerm] = useState('');
@@ -293,7 +313,14 @@ const OrdersPage = () => {
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
                         <thead className="text-sm text-gray-500 uppercase bg-gray-50">
-                            <tr><th className="p-3">Order ID</th><th className="p-3">Customer</th><th className="p-3">Date</th><th className="p-3">Items</th><th className="p-3 text-right">Total</th><th className="p-3 text-center">Status</th></tr>
+                            <tr>
+                                <th className="p-3">Order ID</th>
+                                <th className="p-3">Customer</th>
+                                <th className="p-3">Date</th>
+                                <th className="p-3">Payment</th>
+                                <th className="p-3 text-right">Total</th>
+                                <th className="p-3 text-center">Status</th>
+                            </tr>
                         </thead>
                         <tbody>
                             {filteredOrders.length > 0 ? (
@@ -302,13 +329,12 @@ const OrdersPage = () => {
                                         <td className="p-3 font-medium text-gray-900">#{order._id.slice(-6)}</td>
                                         <td className="p-3 text-gray-600">{order.customer?.fullName || 'N/A'}</td>
                                         <td className="p-3 text-gray-600">{new Date(order.createdAt).toLocaleDateString()}</td>
-                                        <td className="p-3 text-gray-600">{order.items.length}</td>
+                                        <td className="p-3 text-gray-600">{order.paymentMethod}</td>
                                         <td className="p-3 text-right font-medium">₹{order.amount.toLocaleString()}</td>
                                         <td className="p-3 text-center" onClick={(e) => e.stopPropagation()}>
                                             <select
                                                 value={order.status}
                                                 onChange={(e) => handleStatusChange(order._id, e.target.value)}
-                                                // THIS CLASSNAME IS NOW UPDATED
                                                 className={`w-full p-1.5 text-xs font-semibold text-center rounded-md appearance-none border-0 focus:ring-2 focus:ring-offset-2 ${getStatusColor(order.status)}`}
                                             >
                                                 <option>Pending</option><option>Shipped</option><option>Delivered</option><option>Cancelled</option>
@@ -544,23 +570,25 @@ const CategoryFormModal = ({ isOpen, onClose, onSave, category }) => {
     );
 };
 
-
-
 const AdminDashboard = () => {
     const [activePage, setActivePage] = useState('dashboard');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const { user, logout } = useContext(AuthContext);
+
+    // CHATBOT & LOGOUT HOOKS
+    const { isChatbotVisible, toggleChatbot, closeChatbot } = useChatbot();
     const [isLogoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
 
-
-    useEffect(() => {
-        const styleId = 'react-toastify-css';
-        if (!document.getElementById(styleId)) {
-            const link = document.createElement('link');
-            link.id = styleId; link.rel = 'stylesheet';
-            link.href = 'https://cdn.jsdelivr.net/npm/react-toastify@9.1.3/dist/ReactToastify.min.css';
-            document.head.appendChild(link);
-        }
-    }, []);
+    const handleLogout = () => {
+        setLogoutConfirmOpen(false);
+        logout();
+        window.location.href = '/';
+    };
+    
+    const confirmLogoutFromChatbot = () => {
+        closeChatbot();
+        setTimeout(() => setLogoutConfirmOpen(true), 100);
+    };
 
     useEffect(() => {
         const handleHashChange = () => {
@@ -568,19 +596,14 @@ const AdminDashboard = () => {
             if (hash === 'logout') {
                 setLogoutConfirmOpen(true);
             } else {
-                const validPages = ['dashboard', 'orders', 'products', 'categories', 'users'];
+                const validPages = ['dashboard', 'orders', 'products', 'categories', 'users', 'profile'];
                 setActivePage(validPages.includes(hash) ? hash : 'dashboard');
             }
         };
         window.addEventListener('hashchange', handleHashChange);
-        handleHashChange(); // Check hash on initial load
+        handleHashChange();
         return () => window.removeEventListener('hashchange', handleHashChange);
     }, []);
-
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        window.location.href = '/';
-    };
 
     const renderPage = () => {
         switch (activePage) {
@@ -589,6 +612,7 @@ const AdminDashboard = () => {
             case 'products': return <ProductsPage />;
             case 'categories': return <CategoriesPage />;
             case 'users': return <UsersPage />;
+            case 'profile': return <AdminProfilePage />;
             default: return <DashboardPage />;
         }
     };
@@ -613,7 +637,7 @@ const AdminDashboard = () => {
         <>
             <div className="p-4 flex items-center justify-between">
                 <a href="#dashboard" className="flex items-center gap-3">
-                    <img src={logo} alt="GrocerAdmin Logo" className="h-16 w-auto" />
+                    <img src="/hamro2.png" alt="GrocerAdmin Logo" className="h-12 w-auto" />
                 </a>
                 <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-gray-500"><X size={24} /></button>
             </div>
@@ -623,6 +647,7 @@ const AdminDashboard = () => {
                 <NavLink page="products" icon={Package}>Products</NavLink>
                 <NavLink page="categories" icon={Tag}>Categories</NavLink>
                 <NavLink page="users" icon={Users}>Customers</NavLink>
+                <NavLink page="profile" icon={UserIcon}>Profile</NavLink>
             </nav>
             <div className="p-4 border-t border-gray-200">
                 <NavLink page="logout" icon={LogOut} isLogout={true}>Logout</NavLink>
@@ -630,13 +655,11 @@ const AdminDashboard = () => {
         </>
     );
 
-    const handleImageError = (e) => { e.target.onerror = null; e.target.src = `https://placehold.co/40x40/e2e8f0/4a5568?text=GA`; };
-
     return (
         <div className="flex h-screen bg-gray-100 font-sans text-gray-900">
             <div className={`fixed inset-0 z-40 flex lg:hidden transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 <div className="w-72 bg-white shadow-lg flex flex-col"><SidebarContent /></div>
-                <div className="flex-1 bg-black bg-opacity-50" onClick={() => setIsSidebarOpen(false)}></div>
+                <div className="flex-1" onClick={() => setIsSidebarOpen(false)}></div>
             </div>
             <aside className="w-72 bg-white shadow-md hidden lg:flex flex-col flex-shrink-0"><SidebarContent /></aside>
             <div className="flex-1 flex flex-col overflow-hidden">
@@ -645,18 +668,38 @@ const AdminDashboard = () => {
                     <div className="hidden lg:block"></div>
                     <div className="flex items-center gap-4">
                         <div className="flex items-center gap-3">
-                            <img src={`https://i.pravatar.cc/150?u=groceradmin`} alt="Admin" className="w-10 h-10 rounded-full object-cover" onError={handleImageError} />
-                            <div><p className="font-semibold text-sm">Admin</p><p className="text-xs text-gray-500">Store Manager</p></div>
+                            <Avatar user={user} size={40} />
+                            <div>
+                                <p className="font-semibold text-sm">{user?.fullName || 'Admin'}</p>
+                                <p className="text-xs text-gray-500">Store Manager</p>
+                            </div>
                         </div>
                     </div>
                 </header>
                 <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6 md:p-8">{renderPage()}</main>
             </div>
+            
+            {/* --- FLOATING CHATBOT --- */}
+            <div className="fixed bottom-6 right-6 z-30">
+                <button
+                    onClick={toggleChatbot}
+                    className="p-4 bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700 transition-transform transform hover:scale-110"
+                    aria-label="Toggle Chatbot"
+                >
+                    {isChatbotVisible ? <X size={24} /> : <MessageSquare size={24} />}
+                </button>
+            </div>
+            
+            <Chatbot 
+                isVisible={isChatbotVisible} 
+                onClose={closeChatbot}
+                onConfirmLogout={confirmLogoutFromChatbot}
+            />
+
             <ConfirmationModal
                 isOpen={isLogoutConfirmOpen}
                 onClose={() => {
                     setLogoutConfirmOpen(false);
-                    // Reset hash to current page if logout is cancelled
                     window.location.hash = activePage;
                 }}
                 onConfirm={handleLogout}

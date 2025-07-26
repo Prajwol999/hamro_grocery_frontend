@@ -32,7 +32,6 @@ export const placeOrder = async (orderData) => {
     return response.data;
 };
 
-
 export const updateUserProfilePicture = async (formData) => {
     const response = await updateUserProfilePictureApi(formData);
     return response.data;

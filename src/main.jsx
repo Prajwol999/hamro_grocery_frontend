@@ -7,7 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter } from 'react-router-dom';
 import AuthContextProvider from './auth/AuthContext.jsx';
-import { CartContextProvider } from './context/CartContext.jsx';
+import CartProvider from './context/CartContext.jsx';
 
 const queryClient = new QueryClient();
 
@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <AuthContextProvider>
-          <CartContextProvider>
+          <CartProvider>
             <App />
             <ToastContainer
               position="bottom-right"
@@ -30,7 +30,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               pauseOnHover
               theme="colored"
             />
-          </CartContextProvider>
+          </CartProvider>
         </AuthContextProvider>
       </QueryClientProvider>
     </BrowserRouter>

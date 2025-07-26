@@ -33,7 +33,6 @@ const AuthContextProvider = ({ children }) => {
             localStorage.setItem("token", token);
             setUser(userData);
             
-            // Navigate based on role
             if (userData.role === 'admin') {
                 navigate('/admin/dashboard', { replace: true });
             } else {
@@ -53,14 +52,12 @@ const AuthContextProvider = ({ children }) => {
     };
 
     const updateUser = (updatedUserData) => {
-        console.log("AuthContext: Updating user data.", updatedUserData);
         if (updatedUserData) {
             setUser(updatedUserData);
             localStorage.setItem("user", JSON.stringify(updatedUserData));
         }
     };
 
-    
     const contextValue = useMemo(() => ({
         user,
         loading,
@@ -70,10 +67,10 @@ const AuthContextProvider = ({ children }) => {
         isAuthenticated: !!user
     }), [user, loading]);
 
-
     return (
         <AuthContext.Provider value={contextValue}>
-            {!loading && children}
+            
+            {children}
         </AuthContext.Provider>
     );
 };
