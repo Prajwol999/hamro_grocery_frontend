@@ -1,12 +1,1 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+In today's fast-paced and digitally driven world, people prioritise convenience, particularly when it comes to basic tasks like grocery shopping. The goal of hamro grocery website is to simplify and modernise the grocery shopping experience by offering consumers with a dependable, user-friendly platform on which they can explore, order, and receive food from the comfort of their own homes. This initiative aims to digitise local grocery businesses, allowing them to increase their reach and service customers more efficiently through an online presence.
