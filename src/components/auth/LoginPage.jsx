@@ -7,7 +7,7 @@ import Navbar from '../Navbar';
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
-    const [showPassword, setShowPassword] = useState(false); 
+    const [showPassword, setShowPassword] = useState(false);
     const { login: loginUser, isLoading } = useLoginUser();
 
     const handleChange = (e) => {
@@ -23,7 +23,6 @@ const LoginPage = () => {
         loginUser(formData);
     };
 
-    // Toggles password visibility
     const togglePasswordVisibility = () => {
         setShowPassword(prevState => !prevState);
     };
@@ -44,8 +43,9 @@ const LoginPage = () => {
                     <form className="space-y-6" onSubmit={handleSubmit}>
                         {/* Email Input */}
                         <div>
-                            <label className="text-sm font-medium text-gray-700 block mb-2">Email Address</label>
+                            <label htmlFor="email" className="text-sm font-medium text-gray-700 block mb-2">Email Address</label>
                             <input
+                                id="email" // ADD THIS
                                 type="email"
                                 name="email"
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
@@ -57,9 +57,10 @@ const LoginPage = () => {
                         </div>
                         {/* Password Input with Toggle */}
                         <div>
-                            <label className="text-sm font-medium text-gray-700 block mb-2">Password</label>
+                            <label htmlFor="password" className="text-sm font-medium text-gray-700 block mb-2">Password</label>
                             <div className="relative">
                                 <input
+                                    id="password" // ADD THIS
                                     type={showPassword ? 'text' : 'password'}
                                     name="password"
                                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 pr-10"
@@ -86,18 +87,11 @@ const LoginPage = () => {
                                 </button>
                             </div>
                         </div>
-                        {/* <div className="flex items-center justify-end">
+                        <div className="flex items-center justify-end">
                             <a href="#" onClick={(e) => e.preventDefault()} className="text-sm text-green-600 hover:underline">
                                 Forgot Password?
-                                
                             </a>
-                        </div> */}
-                        <div className="flex justify-end text-sm w-full">
-                    <Link to="/forgot-password" className="font-semibold text-blue-600 hover:text-blue-500">
-                        Forgot Password?
-                    </Link>
-                </div>
-
+                        </div>
                         {/* Submit Button */}
                         <div>
                             <button type="submit" disabled={isLoading} className="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center disabled:opacity-60">
@@ -120,4 +114,3 @@ const LoginPage = () => {
 
 export default LoginPage;
 export { LoginPage };
-export { NavigationContext } from '../../context/NavigationContext';
